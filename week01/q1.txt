@@ -1,0 +1,3 @@
+Question:  Create your git repository.
+
+Done.  As directed, my git repository is stored under ~/proj/.

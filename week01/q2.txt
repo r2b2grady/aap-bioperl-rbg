@@ -1,0 +1,7 @@
+I chose Emacs as my editor of preference for this class.  I much
+prefer its innate editing capabilities as opposed to the vi paradigm
+of "use a key to enter/exit editing modes".  I'd write more, but that
+was really the only thing that I found as a preference.  (Honestly,
+given my druthers, I'd have chosen Notepad++ or the Eclipse IDE with
+the EPIC plugin for Perl, but that's my own preferences/prejudices
+talking.  =P)

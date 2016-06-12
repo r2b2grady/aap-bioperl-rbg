@@ -1,0 +1,27 @@
+# ======== Simple HTML Copy ========
+# 
+# Copies the files from "~/my_project" to "~/public_html", assuming:
+#   1)  "~/my_project" contains the directories "cgi" and "html".
+#   2)  There are no subdirectories under the "html" and "cgi"
+#       directories.
+
+# (F)rom director
+f = "~/my_project"
+# (T)o directory
+t = "~/public_html"
+
+echo "Uploading files..."
+echo "========================"
+echo "    Uploading root directory files..."
+cp -i "$f/*" "$t/"
+echo "      Root directory contents uploaded."
+echo "------------"
+echo "    Uploading CGI directory..."
+cp -i "$f/cgi/*" "$t/cgi/"
+echo "      CGI directory uploaded."
+echo "------------"
+echo "    Uploading HTML directory..."
+cp -i "$f/html/*" "$t/html/"
+echo "      HTML directory uploaded."
+echo "========================"
+echo "Upload complete."
