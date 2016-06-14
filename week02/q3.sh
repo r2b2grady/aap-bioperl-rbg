@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # ======== Simple HTML Copy ========
 # 
 # Copies the files from "~/my_project" to "~/public_html", assuming:
@@ -6,22 +8,29 @@
 #       directories.
 
 # From directory
-FROM_DIR="~/project"
+FROM_DIR=~/project
 # To directory
-TO_DIR="~/public_html"
+TO_DIR=~/public_html
 
-echo "Uploading files..."
-echo "========================"
-echo "    Uploading root directory files..."
-cp -i "$FROM_DIR/*" "$TO_DIR/"
-echo "      Root directory contents uploaded."
-echo "------------------------"
-echo "    Begin uploading subdirectories."
+cd $FROM_DIR
 
-for i in cgi html; do
-    echo "        " $i | tr 'a-z' 'A-Z'
-    cp -i "$FROM_DIR/$i" "$TO_DIR/$i"
-    echo "          Subdirectory uploaded."
+if [ ! -d $TO_DIR ]; then
+    mkdir $TO_DIR
+    echo "    $TO_DIR created."
+fi
+
+for f in `find . cgi html -maxdepth 1 -type f`; do
+    if [ -f "$TO_DIR/$f" ]; then
+	if [ "$FROM_DIR/$f" -nt "$TO_DIR/$f" ]; then
+	    cp $FROM_DIR/$f $TO_DIR/$f
+	    echo "    Copied $FROM_DIR/$f to $TO_DIR/$f"
+	else
+	    echo "    $TO_DIR/$f newer than $OLD_DIR/$f; not copied"
+	fi
+    else
+	cp $FROM_DIR/$f $TO_DIR/$f
+	echo "    Copied $FROM_DIR/$f to $TO_DIR/$f"
+    fi
 done
 
 echo "========================"
