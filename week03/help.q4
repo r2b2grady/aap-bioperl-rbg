@@ -1,0 +1,24 @@
+Generates one or more randomly generated DNA sequences of the given length and
+either prints the sequences or outputs them to files.
+
+Usage: q4.pl [switches] length [num]
+
+        :: ARGUMENTS ::
+  length    Length for the sequence(s) to generate.
+  num       Number of sequences to generate.  If none is given, defaults to 1.
+
+        :: SWITCHES ::
+  -f        Exports each sequence to a file with the name "seq#".  If potential
+            conflicts are found, the files will be named according to the
+            format "seq#.X" instead, where "X" indicates the run number
+            (starting with 1 for the second run).  For example, if running for
+            the fourth time, the files will be labeled as "seq#.3".
+
+  -o        Program runs in Overwrite mode. It will NOT prompt the user in the
+            event of a file conflict and will overwrite the pre-existing file.
+
+  -r        Randomize the sequence length(s) to be a number between 1 and the
+            given length.
+
+  -h        Prints this help text (also prints by default if no argument is
+            provided).
