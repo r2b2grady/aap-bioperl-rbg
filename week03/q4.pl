@@ -57,7 +57,8 @@ for (@ARGV) {
         if (m/h/) {
             printhelp();
         } else {
-            $mode = s/[^for]+//gr
+            $mode = $_;
+            $mode =~ s/[^for]+//g
         }
     } elsif ($length) {
         # If the argument is not a collection of flags AND the length value has
