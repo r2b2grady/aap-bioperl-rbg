@@ -82,6 +82,7 @@ if ($mode =~ m/f/ && $mode !~ m/o/) {
     # Get a string listing all FILES in the current working directory.
     opendir(my $dh, $dir);
     my $ls = join("\n", grep { $_ !~ m/^\.{1,2}$/ && -f $dir/$_ } readdir $dh);
+    closedir $dh;
     
     # If there is a file named "seq#" in the current working directory,
     # generate the suffix.
