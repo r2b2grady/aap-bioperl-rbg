@@ -26,7 +26,7 @@ sub randseq($;$) {
     # Randomize the length parameter if a second parameter was given.
     $len = int(rand $len) + 1 if $randlen;
     
-     my @nt = qw(A C G T);
+    my @nt = qw(A C G T);
     
     my $seq = "";
     
@@ -81,7 +81,9 @@ my $dir = getcwd();
 if ($mode =~ m/f/ && $mode !~ m/o/) {
     # Get a string listing all FILES in the current working directory.
     opendir(my $dh, $dir);
-    my $ls = join("\n", grep { $_ !~ m/^\.{1,2}$/ && -f $dir/$_ } readdir $dh);
+    my $ls = join("\n", grep {
+	                      $_ !~ m/^\.{1,2}$/ && -f "$dir/$_"
+	                     } readdir $dh);
     closedir $dh;
     
     # If there is a file named "seq#" in the current working directory,
@@ -100,7 +102,14 @@ for (1..$num) {
     
     # If in -f mode, print to a file, otherwise print to STDOUT.
     if ($mode =~ m/f/) {
-        open my $fh, ">:utf8", "$dir/seq$_" . ($fsuff ? ".$fsuff" : "");
+        # Store the number of digits in the number of sequences to generate.
+	my $n = length(sprintf("%d", $num));
+	
+	# Format the number for the output file.
+	my $x = sprintf("\%0${n}d", $_);
+	
+	# Open file for writing.
+	open my $fh, ">:utf8", "$dir/seq$x" . ($fsuff ? ".$fsuff" : "");
         print $fh "$s\n";
         close $fh;
     } else {
