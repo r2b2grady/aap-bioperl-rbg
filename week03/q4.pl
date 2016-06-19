@@ -42,10 +42,10 @@ sub randseq($;$) {
 printhelp() unless @ARGV;
 
 # Declare the general variables.
-my $length;     # Length of sequence(s).
-my $num;        # Number of sequences to generate.
-my $mode;       # Stores all flags used.
-my $fsuff;      # File suffix used to avoid conflicts.
+my $length = 0; # Length of sequence(s).
+my $num = 0;    # Number of sequences to generate.
+my $mode = "";  # Stores all flags used.
+my $fsuff = ""; # File suffix used to avoid conflicts.
 
 #   Loop through the different arguments.
 for (@ARGV) {
