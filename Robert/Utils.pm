@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Exporter 'import';
-our @EXPORT_OK = qw(mult_table randseq);
+our @EXPORT_OK = qw(mult_table randseq arrstohash printhoa digref);
 
 # Prints the multiplication table from 1 to the given limit. If no value is
 # specified, the default variable '$_' will be used.
@@ -41,6 +41,65 @@ sub randseq($;$) {
     }
     
     return $seq;
+}
+
+# Digs down through a recursive reference to return a reference to the ultimate
+# referent.
+sub digref($) {
+	my ($r) = @_;
+	
+	while (ref($r) =~ m/^REF/) {
+		$r = $$r;
+	}
+	
+	return $r;
+}
+
+# Takes two arrays and returns a hash with the first array's items as the keys
+# and the second array's items as the values.  If the key array is longer than
+# the value array, then empty strings will be provided for the missing values.
+# If the key array is shorter than the value array, the function dies.
+sub arrstohash($$) {
+	my ($k, $v) = @_;
+	my %h;
+	
+	# Dig down through recursive references.
+	$k = digref($k);
+	$v = digref($v);
+	
+	# Make sure we have arrays.
+	die "Non-array ref passed as key array." unless ref($k) =~ m/^ARRAY/;
+	die "Non-array ref passed as value array." unless ref($k) =~ m/^ARRAY/;
+	
+	# Make sure the key array is at least as long as the value array.
+	die "Arrays are of unequal lengths." unless scalar(@$k) == scalar(@$v);
+	
+	# Loop through indices of key array.
+	for (my $i = 0; $i < scalar(@$k); $i++) {
+		# If the current index is greater than the final index of the value
+		# array, add an empty value, otherwise add the corresponding value of
+		# the value array.
+		$h{$$k[$i]} = ($#$v < $i ? '' : $$v[$i]);
+	}
+	
+	return %h;
+}
+
+# Prints a hash of arrays.
+sub printhoa($) {
+	my ($hoa) = @_;
+	
+	$hoa = digref(\$hoa);
+	
+	die "Non-hash ref passed!" unless ref($hoa) =~ m/^HASH/;
+	
+	# Loop through keys.
+	for (sort keys(%$hoa)) {
+		print "$_:\n";
+		for (my $i = 0; $i < scalar(@{$hoa->{$_}}); $i++) {
+			print "\t$i:\t$hoa->{$_}[$i]\n";
+		}
+	}
 }
 
 1;
