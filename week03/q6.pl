@@ -8,9 +8,10 @@ use warnings;
 while (1) {
 	print "Enter regex:  ";
 	my $re = <STDIN>;
-	print "\nEnter string, or 'exit' to exit:  ";
+	chomp $re;
+	print "Enter string, or 'exit' to exit:  ";
 	my $str = <STDIN>;
-	print "\n";
+	chomp $str;
 	if ($str eq 'exit') {
 		print "So long, and thanks for all the fish!\n";
 		exit;
