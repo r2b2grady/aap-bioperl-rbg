@@ -3,6 +3,7 @@ use strict;
 use warnings;
 
 use lib "~/proj/";
+use lib "..";
 
 use Test::Simple tests => 8;
 use week04::q3 qw(randseq);
@@ -13,8 +14,10 @@ for (1..4) {
 	push @len, int(rand(100) + 1) + 50;
 }
 
-$, = "\n";
-print (@dna, "");
+my @dna = (randseq($len[0]),
+           randseq($len[1], 0),
+           randseq($len[2], "A"),
+           randseq($len[3], 1));
 
 ok(length($dna[0]) == $len[0], "randseq(num): String Length OK.");
 ok($dna[0] !~ m/[^ACGT]/, "randseq(num): String Composition OK.");
