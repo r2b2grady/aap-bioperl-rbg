@@ -1,0 +1,12 @@
+        == REGEXES ==
+1)  Target string containing an integer:
+        /\d+/
+
+2)  Target string containing an integer or decimal number:
+        /\d+(?:\.\d+)?/
+
+3)  Target string containing a positive or negative integer or decimal number:
+        /-?\d+(?:\.\d+)?/
+
+4)  Target string containing a positive or negative number in scientific notation:
+        /-?\d+(?:\.\d+)?e-?\d+/i
