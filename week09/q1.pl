@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Bio::Perl;
+use Data::Dumper;
 use POSIX qw(strftime);
 
 # Created on: Jul 30, 2016
@@ -113,6 +114,11 @@ for my $r (@results) {
     $qid =~ s/gi\|/GI_/g;
     $qid =~ s/ref\|/Ref_/g;
     $qid =~ s/\|/ /g;
+    
+    my $d = Data::Dumper->new([$r], [$qid]);
+    
+    print $d->Dump;
+    print "\n";
     
     my $fname = "$qid BLAST Report_$t.txt";
     
