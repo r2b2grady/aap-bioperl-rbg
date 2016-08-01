@@ -110,9 +110,13 @@ for my $r (@results) {
     my $t = strftime('%Y-%m-%d %H%M%S', localtime);
     
     my $qid = $r->query_name();
-    $qid =~ s/\|/ /;
+    $qid =~ s/gi\|/GI_/g;
+    $qid =~ s/ref\|/Ref_/g;
+    $qid =~ s/\|/ /g;
     
-    write_blast("./$qid BLAST Report_$t.txt", $r);
+    my $fname = "$qid BLAST Report_$t.txt";
+    
+    write_blast($fname, $r);
 }
 
 print "-" x 79;
