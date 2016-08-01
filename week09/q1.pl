@@ -117,8 +117,12 @@ for my $r (@results) {
     
     my $d = Data::Dumper->new([$r], [$qid]);
     
-    print $d->Dump;
-    print "\n";
+    open my $fh, '>', "$qid Dump_$t.txt";
+    
+    print $fh $d->Dump;
+    print $fh "\n";
+    
+    close $fh;
     
     my $fname = "$qid BLAST Report_$t.txt";
     
