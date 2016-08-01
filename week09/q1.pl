@@ -116,6 +116,9 @@ for my $r (@results) {
     
     my $fname = "$qid BLAST Report_$t.txt";
     
+    open my $fh, '>', $fname;
+    close $fh;
+    
     write_blast($fname, $r);
 }
 
