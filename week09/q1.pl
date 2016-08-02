@@ -4,6 +4,8 @@ use strict;
 use warnings;
 
 use Bio::Perl;
+use Bio::SearchIO;
+use Bio::SearchIO::Writer::TextResultWriter;
 use Data::Dumper;
 use POSIX qw(strftime);
 
@@ -12,7 +14,7 @@ use POSIX qw(strftime);
 
 my $Version = 1.0.0;
 
-my $file = "";
+my $fastafile = "";
 
 # Variable for storing output mode information.  'f' indicates file output,
 # 'p' indicates print to terminal.  Can indicate both.
@@ -20,7 +22,7 @@ my $outmode = 'p';
 
 for (@ARGV) {
     if (-f $_) {
-        $file = $_;
+        $fastafile = $_;
     }
 }
 
@@ -31,7 +33,7 @@ my @seqa = ();
 my %seqh = ();
 
 # Open and read through file.
-my $fsh = Bio::SeqIO->new(-file     => $file,
+my $fsh = Bio::SeqIO->new(-file     => $fastafile,
                           -format   => 'fasta');
 
 while (my $s = $fsh->next_seq()) {
@@ -115,23 +117,42 @@ for my $r (@results) {
     $qid =~ s/ref\|/Ref_/g;
     $qid =~ s/\|/ /g;
     
-    my $d = Data::Dumper->new([$r], [$qid]);
+    my $outpath = "$qid BLAST Report_$t.txt";
     
-    open my $fh, '>', "$qid Dump_$t.txt";
-    
-    print $fh $d->Dump;
-    print $fh "\n";
-    
+    open my $fh, '>', $outpath;
     close $fh;
     
-    my $fname = "$qid BLAST Report_$t.txt";
+#    write_blast($outpath, $r);
     
-    open my $fh, '>', $fname;
-    close $fh;
+    my $writer = new Bio::SearchIO::Writer::TextResultWriter();
     
-    write_blast($fname, $r);
+    my $rpth = Bio::SearchIO->new(-writer   => $writer,
+                                  -file     => $outpath);
+    
+    $rpth->write_report($r);
+    
+#    my %paths = (rpt => "$qid BLAST Report_$t.txt",
+#                 res => "$qid BLAST Result_$t.txt");
+#    
+#    my $writer = new Bio::SearchIO::Writer::TextResultWriter();
+#    
+#    for (keys %paths) {
+#    	open my $fh, '>', $paths{$_};
+#    	close $fh;
+#    }
+#    
+#    my $w_rpt = Bio::SearchIO->new(-writer  => $writer,
+#                                   -file    => $paths{rpt});
+#    
+#    my $w_res = Bio::SearchIO->new(-writer  => $writer,
+#                                   -file    => $paths{res});
+#    
+#    $w_rpt->write_report($r);
+#    
+#    $w_res->write_result($r);
 }
 
 print "-" x 79;
 print "\n";
-print scalar(@blast_seqs) . " sequences sent to BLAST.\n";
+print scalar(@blast_seqs) . " sequence" .
+      (scalar(@blast_seqs) > 1 ? "s" : "") . " sent to BLAST.\n";
