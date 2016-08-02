@@ -123,33 +123,6 @@ for my $r (@results) {
     close $fh;
     
     write_blast(">$outpath", $r);
-    
-    # my $writer = new Bio::SearchIO::Writer::TextResultWriter();
-    
-    # my $rpth = Bio::SearchIO->new(-writer   => $writer,
-                                  # -file     => $outpath);
-    
-    # $rpth->write_report($r);
-    
-#    my %paths = (rpt => "$qid BLAST Report_$t.txt",
-#                 res => "$qid BLAST Result_$t.txt");
-#    
-#    my $writer = new Bio::SearchIO::Writer::TextResultWriter();
-#    
-#    for (keys %paths) {
-#    	open my $fh, '>', $paths{$_};
-#    	close $fh;
-#    }
-#    
-#    my $w_rpt = Bio::SearchIO->new(-writer  => $writer,
-#                                   -file    => $paths{rpt});
-#    
-#    my $w_res = Bio::SearchIO->new(-writer  => $writer,
-#                                   -file    => $paths{res});
-#    
-#    $w_rpt->write_report($r);
-#    
-#    $w_res->write_result($r);
 }
 
 print "-" x 79;
