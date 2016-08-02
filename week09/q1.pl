@@ -122,14 +122,14 @@ for my $r (@results) {
     open my $fh, '>', $outpath;
     close $fh;
     
-#    write_blast($outpath, $r);
+    write_blast($outpath, $r);
     
-    my $writer = new Bio::SearchIO::Writer::TextResultWriter();
+    # my $writer = new Bio::SearchIO::Writer::TextResultWriter();
     
-    my $rpth = Bio::SearchIO->new(-writer   => $writer,
-                                  -file     => $outpath);
+    # my $rpth = Bio::SearchIO->new(-writer   => $writer,
+                                  # -file     => $outpath);
     
-    $rpth->write_report($r);
+    # $rpth->write_report($r);
     
 #    my %paths = (rpt => "$qid BLAST Report_$t.txt",
 #                 res => "$qid BLAST Result_$t.txt");
