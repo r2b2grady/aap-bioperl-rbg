@@ -122,7 +122,7 @@ for my $r (@results) {
     open my $fh, '>', $outpath;
     close $fh;
     
-    write_blast($outpath, $r);
+    write_blast(">$outpath", $r);
     
     # my $writer = new Bio::SearchIO::Writer::TextResultWriter();
     
