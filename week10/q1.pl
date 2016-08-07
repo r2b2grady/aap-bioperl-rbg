@@ -158,8 +158,14 @@ sub ns_blast($) {
     
     my $res;
     
+    my $n = 0;
+    
     BLAST :
     while (my @rids = $blaster->each_rid) {
+    	if ($n % 20 == 0 && $n > 0) {
+    		print "";
+    	}
+    	
         for my $rid (@rids) {
             my $rc = $blaster->retrieve_blast($rid);
             
@@ -172,16 +178,21 @@ sub ns_blast($) {
             } else {
                 print STDERR "." unless $quiet;
                 sleep 5;
+                $n++
             }
         }
     }
     
     print STDERR "\n" unless $quiet;
     
+    # Accession Number; used for Regex searching.
+    my $acc = $s->accession();
+    
     my $hit = $res->next_hit();
     
     # Loop through hits until the first non-self hit is found.
-    while (defined $hit && ($hit->accession() eq $accn ||
+    while (defined $hit && ($hit->accession() =~ m/\|$acc/ ||
+                            $hit->accesion() eq $acc ||
                             $hit->name() eq $s->display_id())) {
         $hit = $res->next_hit();
     }
