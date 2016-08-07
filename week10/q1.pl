@@ -142,7 +142,7 @@ sub ns_blast($) {
     die "Invalid sequence parameter passed to ns_blast: $!"
             unless $seq->isa("Bio::SeqI");
     
-    my $r = $blaster->submit($seq);
+    my $r = $blaster->submit_blast($seq);
     
     unless ($quiet) {
         print STDERR "BLAST submitted for ";
