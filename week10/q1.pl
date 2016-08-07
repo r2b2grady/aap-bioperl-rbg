@@ -146,12 +146,12 @@ sub ns_blast($) {
     
     unless ($quiet) {
         print STDERR "BLAST submitted for ";
-        if ($seq->accession) {
-        	print "Accn [" . $seq->accession;
+        if ($seq->accession()) {
+        	print STDERR "Accn [" . $seq->accession;
         } else {
-    	   print "ID [" . $seq->id;
+    	   print STDERR "ID [" . $seq->id;
         }
-        print "] ";
+        print STDERR "] ";
     }
     
     sleep 5;
