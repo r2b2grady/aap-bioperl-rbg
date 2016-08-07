@@ -90,6 +90,8 @@ unless (defined $outseq) {
 	exit;
 }
 
+$outseq = ns_blast($outseq);
+
 print hdr(" Results For $accn ", 79, '=') . "\n";
 
 unless (defined $outseq) {
@@ -101,10 +103,8 @@ unless (defined $outseq) {
 }
 
 if ($seq->accession eq $outseq->accession || $seq->id eq $outseq->id) {
-	print '+' x 8;
-	print hdr(" Result sequence matches initial search sequence", 63,
-	          ['', ' ']);
-	print '+' x 8 . "\n";
+	print hdr(" Result sequence matches initial search sequence", 79,
+	          '+') . "\n";
 }
 
 # Get the type of sequence (i.e. alphabet) and apply standard capitalization.
@@ -117,10 +117,10 @@ my $spec = $outseq->species;
 print "Accession:  " . $outseq->accession . "\n";
 print "Name:       " . $outseq->display_id . "\n";
 print "GI:         " . $outseq->primary_id . "\n";
-print "Type:       $type";
+print "Type:       $type\n";
 print "Desc:       " . $outseq->desc . "\n";
 print "Species:    " . $spec->common_name . "\n";
-print '' x  12 . "(" . $spec->genus . " " . $spec->species;
+print ' ' x  12 . "(" . $spec->genus . " " . $spec->species;
 print " " . $spec->sub_species if $spec->sub_species;
 print ")\n";
 print "[variant " . $spec->variant . "]\n" if $spec->variant;
