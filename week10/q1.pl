@@ -182,7 +182,7 @@ sub ns_blast($) {
     
     # Loop through hits until the first non-self hit is found.
     while (defined $hit && ($hit->accession() eq $accn ||
-                            $hit->name() eq $seq->name())) {
+                            $hit->name() eq $seq->display_id())) {
         $hit = $res->next_hit();
     }
     
