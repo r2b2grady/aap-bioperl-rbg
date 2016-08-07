@@ -132,24 +132,24 @@ print "[variant " . $spec->variant . "]\n" if $spec->variant;
 # undefined, the function returns undef.  If no match is found, the function
 # returns undefined.
 sub ns_blast($) {
-    my ($seq) = @_;
+    my ($s) = @_;
     
-    return undef unless defined $seq;
+    return undef unless defined $s;
     
     # Handle invalid inputs and other error conditions.
     die "GenBank DB handler not yet defined: $!" unless defined $gbh;
     die "BLAST factory not yet defined: $!" unless defined $blaster;
     die "Invalid sequence parameter passed to ns_blast: $!"
-            unless $seq->isa("Bio::SeqI");
+            unless $s->isa("Bio::SeqI");
     
-    my $r = $blaster->submit_blast($seq);
+    my $r = $blaster->submit_blast($s);
     
     unless ($quiet) {
         print STDERR "BLAST submitted for ";
-        if ($seq->accession()) {
-        	print STDERR "Accn [" . $seq->accession;
+        if ($s->accession()) {
+        	print STDERR "Accn [" . $s->accession;
         } else {
-    	   print STDERR "ID [" . $seq->id;
+    	   print STDERR "ID [" . $s->id;
         }
         print STDERR "] ";
     }
@@ -182,7 +182,7 @@ sub ns_blast($) {
     
     # Loop through hits until the first non-self hit is found.
     while (defined $hit && ($hit->accession() eq $accn ||
-                            $hit->name() eq $seq->display_id())) {
+                            $hit->name() eq $s->display_id())) {
         $hit = $res->next_hit();
     }
     
