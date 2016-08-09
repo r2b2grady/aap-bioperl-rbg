@@ -12,6 +12,7 @@ use Bio::DB::GenPept;
 use Bio::SearchIO;
 use Bio::Tools::Run::RemoteBlast;
 use List::Util qw(max);
+use POSIX qw(strftime);
 
 sub ns_blast($);
 sub hdr($$$);
@@ -144,6 +145,10 @@ sub ns_blast($) {
     
     my $r = $blaster->submit_blast($s);
     
+    my $start = time;
+    my $t1 = $start;
+    my $t2 = $t1;
+    
     unless ($quiet) {
         print STDERR "BLAST submitted for ";
         if ($s->accession()) {
@@ -158,14 +163,8 @@ sub ns_blast($) {
     
     my $res;
     
-    my $n = 0;
-    
     BLAST :
     while (my @rids = $blaster->each_rid) {
-    	if ($n % 20 == 0 && $n > 0) {
-    		print "";
-    	}
-    	
         for my $rid (@rids) {
             my $rc = $blaster->retrieve_blast($rid);
             
@@ -176,14 +175,26 @@ sub ns_blast($) {
             } elsif (0 > $rc) {
                 $blaster->remove_rid($rid);
             } else {
-                print STDERR "." unless $quiet;
+                unless ($quiet) {
+                	$t2 = time;
+                	
+                	if ($t1 != $start) {
+                		my $tstr = strftime('%Hh %Mm %Ss',
+                		                   gmtime($t1 - $start));
+                		print STDERR "\b" x length($tstr);
+                	}
+                	
+                	print STDERR strftime('%Hh %Mm %Ss',
+                	                      gmtime($t2 - $start));
+                }
+#                print STDERR "." unless $quiet;
                 sleep 5;
-                $n++
+                $t1 = $t2;
             }
         }
     }
     
-    print STDERR "\n" unless $quiet;
+    print STDERR " - Finished\n" unless $quiet;
     
     # Accession Number; used for Regex searching.
     my $acc = $s->accession();
@@ -191,8 +202,8 @@ sub ns_blast($) {
     my $hit = $res->next_hit();
     
     # Loop through hits until the first non-self hit is found.
-    while (defined $hit && ($hit->accession() =~ m/\|$acc/ ||
-                            $hit->accesion() eq $acc ||
+    while (defined $hit && ($hit->accession() =~ m/\|$acc(?:\.\d+)?/ ||
+                            $hit->accession() =~ m/^$acc(?:\.\d+)?$/ ||
                             $hit->name() eq $s->display_id())) {
         $hit = $res->next_hit();
     }
