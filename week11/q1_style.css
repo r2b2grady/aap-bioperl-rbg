@@ -1,0 +1,20 @@
+td, th {
+    padding: 4px;
+    vertical-align: top;
+    text-align: left;
+}
+
+th {
+    font-weight: bold;
+    font-size: 1.25rem;
+    padding-left: 16px;
+    background-color: #c0c0c0;
+}
+
+table {
+    border: 1;
+}
+
+table table {
+    min-width: 100%;
+}
