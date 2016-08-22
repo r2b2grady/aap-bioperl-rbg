@@ -110,8 +110,7 @@ my $r = $blaster->submit_blast($seq);
 
 #   Time-tracking variables.
 my $start = time;
-my $t1 = $start;
-my $t2 = $t1;
+my @t = ($start, $start);
 my $tstr = "";
 
 print STDERR "BLAST submitted for [$accn] ";
@@ -140,18 +139,18 @@ while (my @rids = $blaster->each_rid) {
                }
             }
         } else {
-            $t2 = time;
+            $t[1] = time;
             
-            if ($t1 != $start) {
+            if ($t[0] != $start) {
             	print STDERR "\b" x length($tstr);
             	
             	$tstr = strftime('%Hh %Mm %Ss',
-            	                 gmtime($t2 - $start));
+            	                 gmtime($t[1] - $start));
             }
             
             print STDERR $tstr;
             
-            $t1 = $t2;
+            $t[0] = $t[1];
             
             sleep 5;
         }
